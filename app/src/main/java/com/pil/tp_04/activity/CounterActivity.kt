@@ -20,8 +20,8 @@ class CounterActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.increment.setOnClickListener { viewModel.incValue(binding.inputCount.text.toString().toInt()) }
-        binding.decrement.setOnClickListener { viewModel.decValue(binding.inputCount.text.toString().toInt()) }
+        binding.increment.setOnClickListener { viewModel.incValue(getInputInt(binding.inputCount.text.toString())) }
+        binding.decrement.setOnClickListener { viewModel.decValue(getInputInt(binding.inputCount.text.toString())) }
         binding.reset.setOnClickListener { viewModel.resetValue() }
 
         viewModel.data.observe({ lifecycle }, ::updateUI)
@@ -44,7 +44,13 @@ class CounterActivity : AppCompatActivity() {
         }
     }
 
+    private fun getInputInt(input: String): Int = input.ifEmpty { ZERO_STRING }.toInt()
+
     private fun showToast(text: String) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        private const val ZERO_STRING = "0"
     }
 }
